@@ -57,14 +57,14 @@ int main(int arcg, char* argv[])
 	SDL_RenderClear(render);
 
 	SDL_SetRenderDrawColor(render, 255, 0, 0, 255);
-	SDL_RenderDrawLine(render, 0, 0, win_width, 0);
-	SDL_RenderDrawLine(render, 0, win_height-1, win_width, win_height-1);
-	SDL_RenderDrawLine(render, 0, 0, 0, win_height);
+	SDL_RenderDrawLine(render, 100, 100, 40, 300);
+	SDL_RenderDrawLine(render, 100, 100, 160, 300);
+	SDL_RenderDrawLine(render, 50, 150, 160, 150);
 	SDL_RenderDrawLine(render, win_width-1, 0, win_width-1, win_height);
 
 	SDL_RenderPresent(render);
 
-	SDL_Delay(3000);
+	SDL_Delay(2000);
 
 	DeInit(0);
 	return 0;
