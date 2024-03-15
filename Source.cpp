@@ -3,6 +3,8 @@
 
 SDL_Window* win = NULL;
 SDL_Renderer* render = NULL;
+int win_width = 800; int win_height = 600;
+
 
 void DeInit(int error)
 {
@@ -21,7 +23,14 @@ void Init()
 		DeInit(1);
 	}
 
-	SDL_Window* win = SDL_CreateWindow("Just window", 20, 50, 800, 600, SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE);
+		win = SDL_CreateWindow(
+		"Just window", 
+		SDL_WINDOWPOS_CENTERED,
+		SDL_WINDOWPOS_CENTERED,
+		win_width,
+		win_height,
+		SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE
+	);
 
 	if (win == NULL)
 	{
@@ -30,7 +39,7 @@ void Init()
 		DeInit(1);
 	}
 
-	SDL_Renderer* render = SDL_CreateRenderer(win, -1, SDL_RENDERER_ACCELERATED);
+	render = SDL_CreateRenderer(win, -1, SDL_RENDERER_ACCELERATED);
 
 	if (render == NULL)
 	{
@@ -44,7 +53,18 @@ int main(int arcg, char* argv[])
 {
 	Init();
 
-	SDL_Delay(5000);
+	SDL_SetRenderDrawColor(render,200,200,200,255);
+	SDL_RenderClear(render);
+
+	SDL_SetRenderDrawColor(render, 255, 0, 0, 255);
+	SDL_RenderDrawLine(render, 0, 0, win_width, 0);
+	SDL_RenderDrawLine(render, 0, win_height-1, win_width, win_height-1);
+	SDL_RenderDrawLine(render, 0, 0, 0, win_height);
+	SDL_RenderDrawLine(render, win_width-1, 0, win_width-1, win_height);
+
+	SDL_RenderPresent(render);
+
+	SDL_Delay(3000);
 
 	DeInit(0);
 	return 0;
