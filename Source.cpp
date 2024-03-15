@@ -53,14 +53,20 @@ int main(int arcg, char* argv[])
 {
 	Init();
 
-	SDL_SetRenderDrawColor(render,200,200,200,255);
+	SDL_SetRenderDrawColor(render, 200, 200, 200, 255);
 	SDL_RenderClear(render);
 
 	SDL_SetRenderDrawColor(render, 255, 0, 0, 255);
 	SDL_RenderDrawLine(render, 100, 100, 40, 300);
 	SDL_RenderDrawLine(render, 100, 100, 160, 300);
 	SDL_RenderDrawLine(render, 50, 150, 160, 150);
-	SDL_RenderDrawLine(render, win_width-1, 0, win_width-1, win_height);
+	SDL_RenderDrawLine(render, win_width - 1, 0, win_width - 1, win_height);
+
+	int bordersize = 50;
+
+	SDL_Rect r = {0, 0, win_width, win_height};
+	SDL_RenderDrawRect(render, &r);
+	SDL_RenderFillRect(render, &r);
 
 	SDL_RenderPresent(render);
 
