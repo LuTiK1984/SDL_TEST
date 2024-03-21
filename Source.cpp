@@ -1,5 +1,6 @@
 #include <iostream>
 #include <SDL.h>
+#include <SDL_image.h>
 
 SDL_Window* win = NULL;
 SDL_Renderer* render = NULL;
@@ -20,6 +21,7 @@ void DeInit(int error)
 {
 	if (render != NULL) SDL_DestroyRenderer(render);
 	if (win != NULL) SDL_DestroyWindow(win);
+	IMG_Quit();
 	SDL_Quit();
 	exit(error);
 }
@@ -33,7 +35,19 @@ void Init()
 		DeInit(1);
 	}
 
-		win = SDL_CreateWindow(
+	int res = IMG_Init(IMG_INIT_PNG | IMG_INIT_JPG);
+
+	if (res == 0)
+	{
+		printf("Init Error! - %s", SDL_GetError());
+		system("pause");
+		DeInit(1);
+	}
+
+	if (res & IMG_INIT_PNG) printf("Inintialized PNG library.\n"); else printf("Inintialize failed PNG library.\n");
+	if (res & IMG_INIT_JPG) printf("Inintialized JPG library.\n"); else printf("Inintialize failed JPG library.\n");
+
+	win = SDL_CreateWindow(
 		"Just window", 
 		SDL_WINDOWPOS_CENTERED,
 		SDL_WINDOWPOS_CENTERED,
@@ -252,19 +266,24 @@ int main(int arcg, char* argv[])
 {
 	system("chcp 1251");
 	Init();
+	
+	SDL_Surface* surface = IMG_Load("Jaba.jpg");
+	if (surface == NULL)
+	{
+		printf("Couldn`t load Jaba! Error %s", SDL_GetError());
+		system("pause");
+		DeInit(1);
+	}
+
+	SDL_Event ev;
+	bool isRunning = true;
+	
+	int mouse_x = win_width / 2;
+	int mouse_y = win_height / 2;
 
 	SDL_SetRenderDrawColor(render, 255, 255, 255, 255);
 	SDL_RenderClear(render);
-
 	SDL_SetRenderDrawColor(render, 255, 0, 0, 255);
-
-
-	SDL_Event ev;
-
-	bool isRunning = true;
-
-	int mouse_x = win_width / 2;
-	int mouse_y = win_height / 2;
 
 	while (isRunning)
 	{
