@@ -86,37 +86,34 @@ int random(int a, int b)
 	return rand()%(b-a+1)+a;
 }
 
-void DrawWindows(const HouseWindow &window)
+void DrawWindows(HouseWindow window, int upx, int upy)
 {
 	SDL_SetRenderDrawBlendMode(render, SDL_BLENDMODE_BLEND);
 
-
-	for (int i = 0; i <= 180; i += 60)
-	{
 		SDL_SetRenderDrawColor(render, window.color.r, window.color.g, window.color.b, window.color.a);
-		SDL_Rect win_points = { window.x+i, window.y, 40, 30 };
+		SDL_Rect win_points = { window.x+upx, window.y + upy, 40, 30 };
 		SDL_RenderFillRect(render, &win_points);
-	}
-	
-	for (int i = 450; i <= 650; i += 60)
-	{
-		SDL_Rect win_points = { window.x + i, window.y, 40, 30 };
-		SDL_RenderFillRect(render, &win_points);
-	}
-
-	for (int i = 0; i <= 180; i += 60)
-	{
-		SDL_Rect win_points = { window.x + i, window.y + 50, 40, 30 };
-		SDL_RenderFillRect(render, &win_points);
-	}
-
-	for (int i = 450; i <= 650; i += 60)
-	{
-		SDL_Rect win_points = { window.x + i, window.y + 50, 40, 30 };
-		SDL_RenderFillRect(render, &win_points);
-	}
 }
 
+void UpdateWindow(bool isLightUp, HouseWindow smallwindow[])
+{
+	for (int i = 0; i < 16; i++)
+	{
+			if (isLightUp == true)
+			{
+				smallwindow[i].color.a += 1;
+			}
+
+			if (isLightUp == false)
+			{
+				smallwindow[i].color.a -= 1;
+			}
+		
+			if (smallwindow[i].color.a <= 0) isLightUp = true;
+			if (smallwindow[i].color.a >= 255) isLightUp = false;
+
+	}
+}
 int main(int arcg, char* argv[])
 {
 	srand(time(NULL));
@@ -124,45 +121,53 @@ int main(int arcg, char* argv[])
 	Init();
 	
 	bool isRunning = true;
-	HouseWindow smallwindow;
-	smallwindow.x = 10;
-	smallwindow.y = 510;
-	smallwindow.color.r = 255;
-	smallwindow.color.g = 240;
-	smallwindow.color.b = 0;
-	smallwindow.color.a = 255;
 	
-	for (int i = 0; i < 16; i++);
+	HouseWindow smallwindow[16];
 
+	for (int i = 0; i < 16; i++)
+	{
+		smallwindow[i].x = 10;
+		smallwindow[i].y = 510;
+		smallwindow[i].color.r = 255;
+		smallwindow[i].color.g = 240;
+		smallwindow[i].color.b = 0;
+		smallwindow[i].color.a = random(0,255);
+	}
 
 	bool isLightUp = false;
 	while (isRunning)
 	{
 		
-		if (isLightUp = true)
-		{
-			smallwindow.color.a+=2;
-		}
-
-		if (isLightUp = false)
-		{
-			smallwindow.color.a-=2;
-		}
-		
-		if (smallwindow.color.a < 0) isLightUp = true;
-		if (smallwindow.color.a > 255) isLightUp = false;
 
 		SDL_SetRenderDrawColor(render, 10, 5, 65, 255);
 		SDL_RenderClear(render);
 		
 		DrawBackground();
 		
-		DrawWindows(smallwindow);
-
+		int upx = 0;
+		int upy = 0;
+		for (int i = 0; i < 8; i++)
+		{
+			
+			if (upx > 180 && upx <250 ) upx += 215;
+			DrawWindows(smallwindow[i],upx,upy);
+			upx += 60;
+		}
+		upx = 0;
+		upy = 0;
+		for (int i = 8; i < 16; i++)
+		{
+			upy = 55;
+			if (upx > 180 && upx < 250) upx += 215;
+			DrawWindows(smallwindow[i], upx, upy);
+			upx += 60;
+			
+		}
+		UpdateWindow(isLightUp, smallwindow);
 		SDL_RenderPresent(render);
 		
 
-		SDL_Delay(10);
+		SDL_Delay(20);
 	}
 
 	DeInit(0);
