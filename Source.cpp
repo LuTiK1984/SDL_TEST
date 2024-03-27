@@ -310,7 +310,7 @@ int main(int arcg, char* argv[])
 		
 		SDL_RenderPresent(render);
 
-		SDL_Delay(50);
+		SDL_Delay(30);
 	}
 
 	DeInit(0);
