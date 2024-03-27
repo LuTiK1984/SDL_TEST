@@ -158,8 +158,8 @@ void UpdateFirework(Firework firework[3][4], int c)
 	}
 		float onex = (float)random(0, 800);
 		float oney = (float)random(0, 350);
-		float onevx = (float)random(2, 6);
-		float onevy = (float)random(2, 9);
+		float onevx = (float)random(1, 4);
+		float onevy = (float)random(2, 6);
 		
 		unsigned char r = random(0, 255);
 		unsigned char g = random(0, 255);
